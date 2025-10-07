@@ -6,31 +6,53 @@ const uploadFile = require("../services/storage.service");
 async function postController(req, res) {
   const file = req.file;
 
-  if(!file){
+  if (!file) {
     return res.status(400).json({
-        message : "No file is Selected !!!"
-    })
+      message: "No file is Selected !!!",
+    });
   }
 
+  console.log("req.body--", req.body);
+  
+  // Extract parameters from request body with default values
+  const { 
+    captionLength = 'medium', 
+    mood = '', 
+    extraInstructions = '', 
+    includeHashtags = true 
+  } = req.body;
 
   const base64ImageFile = file.buffer.toString("base64");
 
-  const caption = await generateCaption(base64ImageFile);
-  const result = await uploadFile(file.buffer);
+  console.log('caption.length-',captionLength, mood)
 
-//   console.log('caption', caption);
-  console.log('result', result);
+  try {
+    const caption = await generateCaption(
+      base64ImageFile, 
+      captionLength, 
+      mood, 
+      extraInstructions, 
+      includeHashtags
+    );
     
-  const post = await postModel.create({
-    image : result.url,
-    caption :caption,
-  })
+    const result = await uploadFile(file.buffer);
 
+    const post = await postModel.create({
+      image: result.url,
+      caption: caption,
+    });
 
-  res.status(201).json({
-    message : "Post Created Successfully !!",
-    post
-  });
+    res.status(201).json({
+      message: "Post Created Successfully !!",
+      post,
+    });
+  } catch (error) {
+    console.error("Error in postController:", error);
+    res.status(500).json({
+      message: "Error generating caption",
+      error: error.message
+    });
+  }
 }
 
 module.exports = { postController };
