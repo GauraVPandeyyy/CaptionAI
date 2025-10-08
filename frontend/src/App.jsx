@@ -12,6 +12,7 @@ import {
   AlertCircle,
   X,
   Settings,
+  Download,
 } from "lucide-react";
 import {
   SignInButton,
@@ -19,9 +20,9 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/clerk-react";
-const logo = "./assets/CapGen.png";
+import { usePWA } from "./hooks/usePWA";
 
-const API_URL ="http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,13 @@ export default function App() {
   const [success, setSuccess] = useState(null);
   const [copied, setCopied] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+
+  // PWA installation state
+  const { installPrompt, isInstalled, installApp } = usePWA();
+
+  const handleInstallClick = async () => {
+    await installApp();
+  };
 
   // Caption options state
   const [captionOptions, setCaptionOptions] = useState({
@@ -175,6 +183,31 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3">
+            {/* PWA Install Button */}
+            {installPrompt && !isInstalled && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+                className="fixed bottom-6 right-6 flex items-center backdrop-blur-md bg-white/10 border border-white/20 rounded-2xl shadow-2xl z-50"
+              >
+                {/* <div className="text-white text-sm font-medium">
+                  📱 Install{" "}
+                  <span className="font-semibold text-indigo-400">CapGen</span>{" "}
+                  App
+                </div> */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={handleInstallClick}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-semibold shadow-md hover:shadow-lg transition-all"
+                >
+                  <Download className="w-4 h-4" />
+                  Install
+                </motion.button>
+              </motion.div>
+            )}
+
             <SignedOut>
               <SignInButton mode="modal">
                 <button className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-300 rounded-lg font-medium hover:bg-gray-50 transition-colors">

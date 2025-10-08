@@ -1,20 +1,45 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/CapGen.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-   <title>CapGen | Gaurav</title>
 
     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-HG67GS6Z27"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-HG67GS6Z27"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
 
-  gtag('config', 'G-HG67GS6Z27');
-</script>
+      gtag("config", "G-HG67GS6Z27");
+    </script>
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#6366f1" />
+    <meta
+      name="description"
+      content="AI-powered caption generator for your images"
+    />
+
+    <!-- PWA Capable - Fixed version -->
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <!-- Apple PWA Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="CapGen" />
+    <link rel="apple-touch-icon" href="/pwa-192x192.png" />
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
+
+    <title>CapGen | Gaurav</title>
   </head>
   <body>
     <div id="root"></div>
